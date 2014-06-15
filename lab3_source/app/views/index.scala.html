@@ -1,0 +1,77 @@
+@(periodos: List[Periodo])
+
+@import helper._ 
+
+@main("Meu curso") {
+
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav"
+	role="banner">
+	<div class="navbar-inverse">
+		<div class="container">
+			<nav class="collapse navbar-collapse bs-navbar-collapse"
+				role="navigation">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">Reiniciar Consulta</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+<div class="wrapper" style="height: 100%;">
+	<div class="titulo">
+		<nome-principal>Meu Curso</nome-principal>
+	</div>
+	<br/>	
+	<div id="colunas" style="width: 125%;">
+		@for((periodo, i) <- periodos.zipWithIndex){
+			<div id="periodo_@(i + 1)" class="coluna" style=" height:800px ">
+			<div style="text-align: center;">Periodo @(1 + periodos.indexOf(periodo))</div>
+			<div style="text-align: center;"> @Application.sistema.getCreditos(periodos.indexOf(periodo)) Creditos </div>
+			@for(disciplina <- periodo.getDisciplinas()){
+				<div class="disciplina" style="position:relative;">
+					<nome>@disciplina.getNome() <form method="POST" action="@routes.Application.desalocarDisciplina()">
+						<input type="hidden" name="numeroDisciplina" value="@disciplina.getNumero()"/>
+						<input type="hidden" name="periodo" value="@{periodos.indexOf(periodo)}"/>
+					<button type="submit" class="btn btn-xs" autofocus="autofocus" style="position:absolute; top: 50%; right: 5%; ">
+						x					
+					</button>
+					</form></nome>
+					<descricao>@disciplina.getCreditos() creditos</descricao>
+				</div>
+			}
+			</div>	
+		}
+		
+	</div>
+	<div class="titulo">
+			<nome-principal>Disciplinas Ofertadas</nome-principal>
+	</div>
+	<br/>	
+		
+		<div id="disciplinas" style="margin-left: 150px;">
+		@for(disciplina <- Application.sistema.retornaDisciplinas()){
+			<div class="disciplina float-left" style="width: 180px; height: 160px;">
+				<form id="alocarDisciplina" method="POST" action="@routes.Application.alocarDisciplina()">
+				
+				<nome>@disciplina.getNome()</nome><br/>
+				<descricao>@disciplina.getCreditos() creditos</descricao>
+				<br>
+				<label><small>Periodo:&nbsp;</small></label><select name="periodo">
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+				</select>
+					<input name="numeroDisciplina" type="hidden" value="@disciplina.getNumero()">
+					<br>
+					<button type="submit" class="btn" autofocus="autofocus">Alocar</button>
+				</form>
+			</div>
+		}
+	</div>
+		
+	</div>
+}
