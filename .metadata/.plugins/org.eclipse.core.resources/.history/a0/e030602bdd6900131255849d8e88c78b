@@ -1,0 +1,16 @@
+package controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Periodo;
+
+public class CoursePlanningSystem {
+	
+	private List<Periodo> periodos;
+	
+	public CoursePlanningSystem() {
+		periodos = new ArrayList<Disciplina>();
+	}
+
+}
